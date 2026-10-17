@@ -1,6 +1,8 @@
 "use client";
 
+import { Hash } from "lucide-react";
 import Link from "next/link";
+import { HubIcon } from "@/components/hub-icon";
 import { SubjectHub, hubCardLinkClass } from "@/components/subject-hub";
 import { defaultLocale, t } from "@/lib/i18n";
 import { useStoredScore } from "@/lib/progress";
@@ -10,8 +12,8 @@ const topics = [
     href: "/mates/taules",
     title: "topics.timesTables.title" as const,
     description: "topics.timesTables.description" as const,
-    mark: "×",
-    markClass: "bg-amber-700",
+    icon: Hash,
+    iconClass: "bg-amber-700",
   },
 ];
 
@@ -35,21 +37,16 @@ export default function MatesPage() {
         {topics.map((topic) => (
           <li key={topic.href}>
             <Link href={topic.href} className={hubCardLinkClass}>
-              <span
-                className={`grid size-12 place-items-center rounded-2xl text-xl font-semibold text-white ${topic.markClass}`}
-                aria-hidden="true"
-              >
-                {topic.mark}
-              </span>
+              <HubIcon icon={topic.icon} className={topic.iconClass} />
               <span>
                 <span className="block text-xl font-semibold">
                   {t(defaultLocale, topic.title)}
                 </span>
-                <span className="mt-1 block text-base text-muted">
+                <span className="mt-1 block text-base text-muted-foreground">
                   {t(defaultLocale, topic.description)}
                 </span>
               </span>
-              <span className="text-sm text-muted">
+              <span className="text-sm text-muted-foreground">
                 <ScoreLine />
               </span>
             </Link>

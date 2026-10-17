@@ -141,10 +141,10 @@ export function FlashcardExamSession({
   return (
     <>
       <Shell title={title} onBack={requestLeave}>
-        <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-muted">
+        <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           {t(defaultLocale, "flashcards.modeExam")}
         </p>
-        <p className="mb-4 text-center text-sm text-muted">
+        <p className="mb-4 text-center text-sm text-muted-foreground">
           {t(defaultLocale, "session.progress", {
             current: index + 1,
             total: sessionTotal,

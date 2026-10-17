@@ -1,12 +1,18 @@
 "use client";
 
+import { ChevronLeft, Home, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useEffect, type ReactNode } from "react";
+import { navButtonClassName, sessionButtonClassName } from "@/components/app-ui";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
 import { defaultLocale, t } from "@/lib/i18n";
-import { primaryButton } from "@/components/ui";
+import { cn } from "@/lib/utils";
 
-const backControlClass =
-  "inline-flex h-12 items-center rounded-2xl px-3 text-base font-semibold text-teal-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-800";
+const backControlClass = cn(
+  navButtonClassName,
+  "inline-flex items-center gap-1.5 text-primary hover:bg-muted",
+);
 
 export function Shell({
   title,
@@ -24,24 +30,30 @@ export function Shell({
     document.title = title;
   }, [title]);
 
-  const backLabel =
-    onBack || backHref !== "/"
-      ? t(defaultLocale, "nav.back")
-      : t(defaultLocale, "nav.home");
+  const isHome = !onBack && backHref === "/";
+  const backLabel = isHome
+    ? t(defaultLocale, "nav.home")
+    : t(defaultLocale, "nav.back");
+  const BackIcon = isHome ? Home : ChevronLeft;
 
   return (
     <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-6 sm:py-10">
-      <header className="mb-6 flex items-center justify-between gap-4">
+      <header className="mb-6 flex items-center gap-4">
         {onBack ? (
           <button type="button" onClick={onBack} className={backControlClass}>
+            <BackIcon className="size-5 shrink-0" aria-hidden />
             {backLabel}
           </button>
         ) : (
           <Link href={backHref} className={backControlClass}>
+            <BackIcon className="size-5 shrink-0" aria-hidden />
             {backLabel}
           </Link>
         )}
-        <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
+        <div className="flex min-w-0 flex-1 items-center justify-end gap-2">
+          <h1 className="truncate text-2xl font-semibold tracking-tight">{title}</h1>
+          <ThemeToggle />
+        </div>
       </header>
       <main className="flex flex-1 flex-col">{children}</main>
     </div>
@@ -61,9 +73,10 @@ export function RoundEnd({
     <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
       <p className="text-3xl font-semibold">{t(defaultLocale, "session.done")}</p>
       <p className="text-xl">{t(defaultLocale, "session.score", { correct, total })}</p>
-      <button type="button" onClick={onAgain} className={primaryButton}>
+      <Button type="button" onClick={onAgain} className={`${sessionButtonClassName} gap-2`}>
+        <RotateCcw className="size-5 shrink-0" aria-hidden />
         {t(defaultLocale, "actions.anotherRound")}
-      </button>
+      </Button>
     </div>
   );
 }

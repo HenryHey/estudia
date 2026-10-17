@@ -1,6 +1,8 @@
 "use client";
 
+import { MapPin } from "lucide-react";
 import Link from "next/link";
+import { HubIcon } from "@/components/hub-icon";
 import { SubjectHub, hubCardLinkClass } from "@/components/subject-hub";
 import { provincies, comarquesScoreId } from "@/content/comarques/ca";
 import { defaultLocale, t } from "@/lib/i18n";
@@ -26,19 +28,14 @@ export default function ComarquesTopicPage() {
         {provincies.map((provincia) => (
           <li key={provincia.id}>
             <Link href={`/geografia/comarques/${provincia.id}`} className={hubCardLinkClass}>
-              <span
-                className="grid size-12 place-items-center rounded-2xl bg-indigo-800 text-lg font-semibold text-white"
-                aria-hidden="true"
-              >
-                {provincia.name.slice(0, 1)}
-              </span>
+              <HubIcon icon={MapPin} className="bg-indigo-800" />
               <span>
                 <span className="block text-xl font-semibold">{provincia.name}</span>
-                <span className="mt-1 block text-base text-muted">
+                <span className="mt-1 block text-base text-muted-foreground">
                   {t(defaultLocale, "geography.provinceDescription")}
                 </span>
               </span>
-              <span className="text-sm text-muted">
+              <span className="text-sm text-muted-foreground">
                 <ScoreLine provinciaId={provincia.id} />
               </span>
             </Link>

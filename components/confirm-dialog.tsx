@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
-import { primaryButton, secondaryButton } from "@/components/ui";
+import { primaryButton, secondaryButton } from "@/components/app-ui";
 
 export function ConfirmDialog({
   open,
@@ -50,7 +50,7 @@ export function ConfirmDialog({
         <h2 id={titleId} className="text-xl font-semibold">
           {title}
         </h2>
-        <div className="mt-3 text-base text-muted">{children}</div>
+        <div className="mt-3 text-base text-muted-foreground">{children}</div>
         <div className="mt-6 grid gap-3">
           <button type="button" onClick={onConfirm} className={primaryButton}>
             {confirmLabel}

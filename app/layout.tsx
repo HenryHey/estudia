@@ -14,9 +14,14 @@ export const metadata: Metadata = {
   description: t(defaultLocale, "home.intro"),
 };
 
+const themeInitScript = `(function(){try{var k="estudia-theme";var t=localStorage.getItem(k);var d=t==="dark"||(t!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches);if(d)document.documentElement.classList.add("dark");}catch(e){}})();`;
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang={defaultLocale} className={`${geistSans.variable} h-full antialiased`}>
+    <html lang={defaultLocale} className={`${geistSans.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

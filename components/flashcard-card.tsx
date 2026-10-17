@@ -1,7 +1,8 @@
 "use client";
 
+import { RotateCw, ThumbsDown, ThumbsUp } from "lucide-react";
 import type { Flashcard } from "@/content/flashcards/ca";
-import { primaryButton, secondaryButton } from "@/components/ui";
+import { primaryButton, secondaryButton } from "@/components/app-ui";
 import { defaultLocale, t } from "@/lib/i18n";
 
 export function FlashcardCard({
@@ -33,7 +34,7 @@ export function FlashcardCard({
       >
         {phase === "front" ? (
           <>
-            <span className="text-base font-semibold uppercase tracking-wide text-muted">
+            <span className="text-base font-semibold uppercase tracking-wide text-muted-foreground">
               {frontLabel}
             </span>
             {frontPrompt ? (
@@ -45,7 +46,7 @@ export function FlashcardCard({
         ) : (
           <span className="text-3xl font-semibold leading-snug sm:text-4xl">{backMain}</span>
         )}
-        <span className="mt-6 text-base text-muted">
+        <span className="mt-6 text-base text-muted-foreground">
           {phase === "front"
             ? t(defaultLocale, "flashcards.tapToFlip")
             : t(defaultLocale, "flashcards.didYouKnow")}
@@ -53,15 +54,26 @@ export function FlashcardCard({
       </button>
       <div className="mt-4 grid grid-cols-2 gap-3">
         {phase === "front" ? (
-          <button type="button" onClick={onFlip} className={`${primaryButton} col-span-2`}>
+          <button type="button" onClick={onFlip} className={`${primaryButton} col-span-2 gap-2`}>
+            <RotateCw className="size-5 shrink-0" aria-hidden />
             {t(defaultLocale, "actions.flip")}
           </button>
         ) : (
           <>
-            <button type="button" onClick={() => onMark(false)} className={secondaryButton}>
+            <button
+              type="button"
+              onClick={() => onMark(false)}
+              className={`${secondaryButton} gap-2`}
+            >
+              <ThumbsDown className="size-5 shrink-0" aria-hidden />
               {t(defaultLocale, "actions.again")}
             </button>
-            <button type="button" onClick={() => onMark(true)} className={primaryButton}>
+            <button
+              type="button"
+              onClick={() => onMark(true)}
+              className={`${primaryButton} gap-2`}
+            >
+              <ThumbsUp className="size-5 shrink-0" aria-hidden />
               {t(defaultLocale, "actions.known")}
             </button>
           </>
