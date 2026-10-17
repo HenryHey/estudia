@@ -1,39 +1,42 @@
 "use client";
 
 import Link from "next/link";
+import { SubjectHub, hubCardLinkClassTall } from "@/components/subject-hub";
 import { defaultLocale, t, type MessageKey } from "@/lib/i18n";
-import { useLastScore, type AppId } from "@/lib/progress";
+import { useStoredScore, type AppId } from "@/lib/progress";
 
-const apps: {
-  id: AppId;
-  href: "/flashcards" | "/mates";
+const subjects: {
+  id?: AppId;
+  href: "/geografia" | "/mates";
   title: MessageKey;
   description: MessageKey;
   mark: string;
   markClass: string;
+  scoreVariant?: "best" | "last";
 }[] = [
   {
-    id: "flashcards",
-    href: "/flashcards",
-    title: "apps.flashcards.title",
-    description: "apps.flashcards.description",
-    mark: "Aa",
-    markClass: "bg-teal-700",
+    href: "/geografia",
+    title: "subjects.geography.title",
+    description: "subjects.geography.description",
+    mark: "Ca",
+    markClass: "bg-indigo-800",
   },
   {
     id: "mates",
     href: "/mates",
-    title: "apps.mates.title",
-    description: "apps.mates.description",
+    title: "subjects.math.title",
+    description: "subjects.math.description",
     mark: "×",
     markClass: "bg-amber-700",
+    scoreVariant: "last",
   },
 ];
 
-function ScoreLine({ app }: { app: AppId }) {
-  const score = useLastScore(app);
+function ScoreLine({ app, variant }: { app: AppId; variant: "best" | "last" }) {
+  const score = useStoredScore(app);
   if (!score) return t(defaultLocale, "home.scoreNone");
-  return t(defaultLocale, "home.scoreLast", {
+  const key = variant === "best" ? "home.scoreBest" : "home.scoreLast";
+  return t(defaultLocale, key, {
     correct: score.correct,
     total: score.total,
   });
@@ -41,43 +44,39 @@ function ScoreLine({ app }: { app: AppId }) {
 
 export default function HomePage() {
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 py-10 sm:py-16">
-      <header className="mb-8">
-        <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-          {t(defaultLocale, "home.title")}
-        </h1>
-        <p className="mt-3 max-w-xl text-lg text-muted">{t(defaultLocale, "home.intro")}</p>
-      </header>
-      <main>
-        <ul className="grid gap-4 sm:grid-cols-2">
-          {apps.map((app) => (
-            <li key={app.id}>
-              <Link
-                href={app.href}
-                className="flex min-h-56 flex-col justify-between rounded-3xl bg-card p-5 shadow-sm ring-1 ring-line transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-800"
+    <SubjectHub
+      title={t(defaultLocale, "home.title")}
+      subtitle={t(defaultLocale, "home.intro")}
+    >
+      <ul className="grid gap-4 sm:grid-cols-2">
+        {subjects.map((subject) => (
+          <li key={subject.href}>
+            <Link href={subject.href} className={hubCardLinkClassTall}>
+              <span
+                className={`grid size-12 place-items-center rounded-2xl text-xl font-semibold text-white ${subject.markClass}`}
+                aria-hidden="true"
               >
-                <span
-                  className={`grid size-12 place-items-center rounded-2xl text-xl font-semibold text-white ${app.markClass}`}
-                  aria-hidden="true"
-                >
-                  {app.mark}
+                {subject.mark}
+              </span>
+              <span>
+                <span className="block text-xl font-semibold">
+                  {t(defaultLocale, subject.title)}
                 </span>
-                <span>
-                  <span className="block text-xl font-semibold">
-                    {t(defaultLocale, app.title)}
-                  </span>
-                  <span className="mt-1 block text-base text-muted">
-                    {t(defaultLocale, app.description)}
-                  </span>
+                <span className="mt-1 block text-base text-muted">
+                  {t(defaultLocale, subject.description)}
                 </span>
-                <span className="text-sm text-muted">
-                  <ScoreLine app={app.id} />
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </main>
-    </div>
+              </span>
+              <span className="text-sm text-muted">
+                {subject.id && subject.scoreVariant ? (
+                  <ScoreLine app={subject.id} variant={subject.scoreVariant} />
+                ) : (
+                  t(defaultLocale, "subjects.pickTopic")
+                )}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </SubjectHub>
   );
 }
