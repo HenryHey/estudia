@@ -10,6 +10,12 @@
     "home": "Inici",
     "back": "Enrere"
   },
+  "theme": {
+    "cycle": "Canvia el tema",
+    "modeLight": "Clar",
+    "modeDark": "Fosc",
+    "modeSystem": "Sistema"
+  },
   "subjects": {
     "pickTopic": "Tria un tema.",
     "geography": {
@@ -18,7 +24,7 @@
     },
     "math": {
       "title": "Mates",
-      "description": "Practica càlcul i números."
+      "description": "Practica càlcul i númers."
     }
   },
   "topics": {

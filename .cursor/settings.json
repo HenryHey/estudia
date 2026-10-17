@@ -2,6 +2,9 @@
   "plugins": {
     "thermos": {
       "enabled": true
+    },
+    "shadcn": {
+      "enabled": true
     }
   }
 }

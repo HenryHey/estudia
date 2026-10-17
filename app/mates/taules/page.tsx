@@ -1,9 +1,10 @@
 "use client";
 
+import { ArrowRight, Check } from "lucide-react";
 import { useEffect, useState } from "react";
 import { makeProblems, type Problem } from "@/content/mates/ca";
 import { RoundEnd, Shell } from "@/components/shell";
-import { primaryButton } from "@/components/ui";
+import { primaryButton } from "@/components/app-ui";
 import { defaultLocale, t } from "@/lib/i18n";
 import { writeScore } from "@/lib/progress";
 
@@ -94,7 +95,7 @@ export default function TaulesPage() {
 
   return (
     <Shell title={title} backHref="/mates">
-      <p className="mb-6 text-center text-sm text-muted">
+      <p className="mb-6 text-center text-sm text-muted-foreground">
         {t(defaultLocale, "session.progress", {
           current: round.index + 1,
           total: round.problems.length,
@@ -137,12 +138,19 @@ export default function TaulesPage() {
       </div>
       <div className="mt-4">
         {round.status === "answering" ? (
-          <button type="button" onClick={check} disabled={!draftIsNumber} className={primaryButton}>
+          <button
+            type="button"
+            onClick={check}
+            disabled={!draftIsNumber}
+            className={`${primaryButton} gap-2`}
+          >
+            <Check className="size-5 shrink-0" aria-hidden />
             {t(defaultLocale, "actions.check")}
           </button>
         ) : (
-          <button type="button" onClick={next} className={primaryButton}>
+          <button type="button" onClick={next} className={`${primaryButton} gap-2`}>
             {t(defaultLocale, "actions.next")}
+            <ArrowRight className="size-5 shrink-0" aria-hidden />
           </button>
         )}
       </div>

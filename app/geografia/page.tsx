@@ -1,6 +1,8 @@
 "use client";
 
+import { MapPinned } from "lucide-react";
 import Link from "next/link";
+import { HubIcon } from "@/components/hub-icon";
 import { SubjectHub, hubCardLinkClass } from "@/components/subject-hub";
 import { defaultLocale, t } from "@/lib/i18n";
 
@@ -9,8 +11,8 @@ const topics = [
     href: "/geografia/comarques",
     title: "topics.comarques.title" as const,
     description: "topics.comarques.description" as const,
-    mark: "Ca",
-    markClass: "bg-indigo-800",
+    icon: MapPinned,
+    iconClass: "bg-indigo-800",
   },
 ];
 
@@ -25,17 +27,12 @@ export default function GeografiaPage() {
         {topics.map((topic) => (
           <li key={topic.href}>
             <Link href={topic.href} className={hubCardLinkClass}>
-              <span
-                className={`grid size-12 place-items-center rounded-2xl text-lg font-semibold text-white ${topic.markClass}`}
-                aria-hidden="true"
-              >
-                {topic.mark}
-              </span>
+              <HubIcon icon={topic.icon} className={topic.iconClass} />
               <span>
                 <span className="block text-xl font-semibold">
                   {t(defaultLocale, topic.title)}
                 </span>
-                <span className="mt-1 block text-base text-muted">
+                <span className="mt-1 block text-base text-muted-foreground">
                   {t(defaultLocale, topic.description)}
                 </span>
               </span>
