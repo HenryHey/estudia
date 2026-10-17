@@ -1,0 +1,25 @@
+---
+description: Use Bun as the package manager and script runner (not npm)
+alwaysApply: true
+---
+
+# Package manager: Bun
+
+This project uses **Bun**. Do not use `npm`, `npx`, or `pnpm` unless the user explicitly asks.
+
+## Commands
+
+| Instead of | Use |
+|------------|-----|
+| `npm install` | `bun install` |
+| `npm install <pkg>` | `bun add <pkg>` |
+| `npm install -D <pkg>` | `bun add -d <pkg>` |
+| `npm uninstall <pkg>` | `bun remove <pkg>` |
+| `npm run <script>` | `bun run <script>` or `bun <script>` |
+| `npx <cmd>` | `bunx <cmd>` |
+| `npm ci` | `bun install --frozen-lockfile` |
+
+## Notes
+
+- Lockfile is `bun.lock`; keep it in sync when adding or removing dependencies.
+- Prefer `bun` for one-off scripts and tooling in this repo.

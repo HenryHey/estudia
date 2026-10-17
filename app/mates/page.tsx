@@ -1,159 +1,61 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
-import { makeProblems, timesTables, type Problem } from "@/content/mates/ca";
-import { RoundEnd, Shell } from "@/components/shell";
-import { primaryButton } from "@/components/ui";
+import Link from "next/link";
+import { SubjectHub, hubCardLinkClass } from "@/components/subject-hub";
 import { defaultLocale, t } from "@/lib/i18n";
-import { writeScore } from "@/lib/progress";
+import { useStoredScore } from "@/lib/progress";
 
-type Session = {
-  problems: Problem[];
-  index: number;
-  correct: number;
-  draft: string;
-  status: "answering" | "feedback" | "done";
-  lastOk: boolean;
-};
+const topics = [
+  {
+    href: "/mates/taules",
+    title: "topics.timesTables.title" as const,
+    description: "topics.timesTables.description" as const,
+    mark: "×",
+    markClass: "bg-amber-700",
+  },
+];
 
-function subscribe() {
-  return () => {};
-}
-
-function createSession(): Session {
-  return {
-    problems: makeProblems(),
-    index: 0,
-    correct: 0,
-    draft: "",
-    status: "answering",
-    lastOk: false,
-  };
+function ScoreLine() {
+  const score = useStoredScore("mates");
+  if (!score) return t(defaultLocale, "home.scoreNone");
+  return t(defaultLocale, "home.scoreLast", {
+    correct: score.correct,
+    total: score.total,
+  });
 }
 
 export default function MatesPage() {
-  const title = t(defaultLocale, "apps.mates.title");
-  const isClient = useSyncExternalStore(subscribe, () => true, () => false);
-  const [session, setSession] = useState<Session | null>(null);
-
-  if (isClient && session === null) {
-    setSession(createSession());
-  }
-
-  if (!session) {
-    return (
-      <Shell title={title}>
-        <div className="min-h-64 rounded-3xl bg-card ring-1 ring-line" />
-      </Shell>
-    );
-  }
-
-  const round = session;
-
-  if (round.status === "done") {
-    return (
-      <Shell title={title}>
-        <RoundEnd
-          correct={round.correct}
-          total={round.problems.length}
-          onAgain={() => setSession(createSession())}
-        />
-      </Shell>
-    );
-  }
-
-  const problem = round.problems[round.index];
-  if (!problem) return null;
-
-  const draftIsNumber = /^\d+$/.test(round.draft);
-
-  function check() {
-    if (!draftIsNumber) return;
-    const lastOk = Number(round.draft) === problem.answer;
-    setSession({
-      ...round,
-      status: "feedback",
-      lastOk,
-      correct: round.correct + (lastOk ? 1 : 0),
-    });
-  }
-
-  function next() {
-    const nextIndex = round.index + 1;
-    if (nextIndex >= round.problems.length) {
-      writeScore("mates", {
-        correct: round.correct,
-        total: round.problems.length,
-      });
-      setSession({ ...round, status: "done" });
-      return;
-    }
-    setSession({
-      ...round,
-      index: nextIndex,
-      draft: "",
-      status: "answering",
-      lastOk: false,
-    });
-  }
-
   return (
-    <Shell title={title}>
-      <p className="mb-2 text-center text-sm font-semibold text-amber-800">
-        {timesTables.title}
-      </p>
-      <p className="mb-6 text-center text-sm text-muted">
-        {t(defaultLocale, "session.progress", {
-          current: round.index + 1,
-          total: round.problems.length,
-        })}
-      </p>
-      <div className="flex flex-1 flex-col items-center justify-center rounded-3xl bg-card px-6 py-10 ring-1 ring-line">
-        <p className="text-5xl font-semibold tabular-nums">
-          {problem.left} {problem.symbol} {problem.right}
-        </p>
-        <label className="mt-8 flex items-center gap-3 text-4xl font-semibold" htmlFor="answer">
-          <span aria-hidden="true">=</span>
-          <span className="sr-only">{t(defaultLocale, "mates.answerLabel")}</span>
-          <input
-            id="answer"
-            inputMode="numeric"
-            autoComplete="off"
-            value={round.draft}
-            disabled={round.status === "feedback"}
-            onChange={(event) =>
-              setSession({ ...round, draft: event.target.value.replace(/\D/g, "") })
-            }
-            onKeyDown={(event) => {
-              if (event.key === "Enter") check();
-            }}
-            className="h-16 w-28 rounded-2xl bg-background text-center ring-1 ring-line focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-800 disabled:opacity-70"
-          />
-        </label>
-        <p className="mt-6 min-h-14 text-center text-lg" aria-live="polite">
-          {round.status === "feedback" ? (
-            round.lastOk ? (
-              t(defaultLocale, "session.correct")
-            ) : (
-              <>
-                {t(defaultLocale, "session.incorrect")}{" "}
-                {t(defaultLocale, "session.answerIs", { answer: problem.answer })}
-              </>
-            )
-          ) : null}
-        </p>
-      </div>
-      <div className="mt-4">
-        {round.status === "answering" ? (
-          <button type="button" onClick={check} disabled={!draftIsNumber} className={primaryButton}>
-            {t(defaultLocale, "actions.check")}
-          </button>
-        ) : (
-          <button type="button" onClick={next} className={primaryButton}>
-            {t(defaultLocale, "actions.next")}
-          </button>
-        )}
-      </div>
-    </Shell>
+    <SubjectHub
+      back={{ href: "/", label: t(defaultLocale, "nav.home") }}
+      title={t(defaultLocale, "subjects.math.title")}
+      subtitle={t(defaultLocale, "subjects.pickTopic")}
+    >
+      <ul className="grid gap-4 sm:grid-cols-2">
+        {topics.map((topic) => (
+          <li key={topic.href}>
+            <Link href={topic.href} className={hubCardLinkClass}>
+              <span
+                className={`grid size-12 place-items-center rounded-2xl text-xl font-semibold text-white ${topic.markClass}`}
+                aria-hidden="true"
+              >
+                {topic.mark}
+              </span>
+              <span>
+                <span className="block text-xl font-semibold">
+                  {t(defaultLocale, topic.title)}
+                </span>
+                <span className="mt-1 block text-base text-muted">
+                  {t(defaultLocale, topic.description)}
+                </span>
+              </span>
+              <span className="text-sm text-muted">
+                <ScoreLine />
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </SubjectHub>
   );
 }

@@ -1,22 +1,38 @@
 {
   "home": {
     "title": "Estudia",
-    "intro": "Tria una activitat i practica una estona.",
+    "intro": "Tria una matèria i practica una estona.",
     "scoreNone": "Encara sense puntuació",
-    "scoreLast": "Última puntuació: {correct} de {total}"
+    "scoreLast": "Última puntuació: {correct} de {total}",
+    "scoreBest": "Millor examen: {correct} de {total}"
   },
   "nav": {
-    "home": "Inici"
+    "home": "Inici",
+    "back": "Enrere"
   },
-  "apps": {
-    "flashcards": {
-      "title": "Targetes",
-      "description": "Gira la targeta i digues si la saps."
+  "subjects": {
+    "pickTopic": "Tria un tema.",
+    "geography": {
+      "title": "Geografia",
+      "description": "Practica geografia de Catalunya."
     },
-    "mates": {
+    "math": {
       "title": "Mates",
-      "description": "Taules de multiplicar."
+      "description": "Practica càlcul i números."
     }
+  },
+  "topics": {
+    "comarques": {
+      "title": "Comarques de Catalunya",
+      "description": "Comarques i capitals per província."
+    },
+    "timesTables": {
+      "title": "Taules de multiplicar",
+      "description": "Multiplica amb números del 1 al 10."
+    }
+  },
+  "geography": {
+    "provinceDescription": "Practica comarques i capitals."
   },
   "actions": {
     "flip": "Gira",
@@ -37,7 +53,16 @@
   "flashcards": {
     "tapToFlip": "Toca la targeta per girar-la",
     "didYouKnow": "La sabies?",
-    "empty": "No hi ha targetes."
+    "empty": "No hi ha targetes.",
+    "pickMode": "Com vols practicar?",
+    "modeStudy": "Estudi",
+    "modeExam": "Examen",
+    "modeStudyHint": "Estudi: repeteix les que no saps fins acabar-les totes. Sense puntuació.",
+    "modeExamHint": "Examen: cada pregunta una vegada. Es guarda la millor puntuació.",
+    "examLeaveTitle": "Sortir de l'examen?",
+    "examLeaveBody": "Perdràs el progrés d'aquest examen.",
+    "examLeaveConfirm": "Sortir",
+    "examLeaveCancel": "Continuar l'examen"
   },
   "mates": {
     "answerLabel": "Escriu la resposta"
