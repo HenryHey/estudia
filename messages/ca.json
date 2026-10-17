@@ -1,0 +1,45 @@
+{
+  "home": {
+    "title": "Estudia",
+    "intro": "Tria una activitat i practica una estona.",
+    "scoreNone": "Encara sense puntuació",
+    "scoreLast": "Última puntuació: {correct} de {total}"
+  },
+  "nav": {
+    "home": "Inici"
+  },
+  "apps": {
+    "flashcards": {
+      "title": "Targetes",
+      "description": "Gira la targeta i digues si la saps."
+    },
+    "mates": {
+      "title": "Mates",
+      "description": "Taules de multiplicar."
+    }
+  },
+  "actions": {
+    "flip": "Gira",
+    "known": "La sé",
+    "again": "Encara no",
+    "next": "Següent",
+    "anotherRound": "Una altra ronda",
+    "check": "Comprova"
+  },
+  "session": {
+    "correct": "Correcte!",
+    "incorrect": "Incorrecte.",
+    "done": "Has acabat!",
+    "score": "{correct} de {total}",
+    "progress": "{current} / {total}",
+    "answerIs": "La resposta és {answer}"
+  },
+  "flashcards": {
+    "tapToFlip": "Toca la targeta per girar-la",
+    "didYouKnow": "La sabies?",
+    "empty": "No hi ha targetes."
+  },
+  "mates": {
+    "answerLabel": "Escriu la resposta"
+  }
+}
