@@ -45,7 +45,7 @@ export function ConfirmDialog({
     >
       <div
         role="document"
-        className="w-full max-w-sm rounded-3xl bg-card px-6 py-6 text-center ring-1 ring-line"
+        className="w-full max-w-sm rounded-3xl bg-card px-6 py-6 text-center text-card-foreground ring-1 ring-line"
       >
         <h2 id={titleId} className="text-xl font-semibold">
           {title}

@@ -49,22 +49,22 @@
   --card: #1c222b;
   --card-hover: #252c37;
   --card-foreground: #e8ecf1;
-  --line: #2e3642;
+  --line: #3d4858;
   --highlight: #fbbf24;
   --popover: #1c222b;
   --popover-foreground: #e8ecf1;
   --primary: #2dd4bf;
-  --primary-foreground: #14181f;
+  --primary-foreground: #0b1f1c;
   --secondary: #252c37;
   --secondary-foreground: #e8ecf1;
-  --muted: #252c37;
-  --muted-foreground: #9aa3af;
-  --accent: #252c37;
-  --accent-foreground: #2dd4bf;
+  --muted: #2a323e;
+  --muted-foreground: #b8c1cc;
+  --accent: #2f3844;
+  --accent-foreground: #5eead4;
   --accent-hover: #5eead4;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: #2e3642;
-  --input: #2e3642;
+  --border: #3d4858;
+  --input: #3d4858;
   --ring: #2dd4bf;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
@@ -141,5 +141,8 @@ body {
   }
   html {
     @apply font-sans;
+  }
+  dialog {
+    color: var(--foreground);
   }
 }

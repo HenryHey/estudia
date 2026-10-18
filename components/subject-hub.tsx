@@ -2,6 +2,7 @@ import { ChevronLeft, Home } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { navButtonClassName } from "@/components/app-ui";
+import { ProfileMenu } from "@/components/profile-menu";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
@@ -43,7 +44,10 @@ export function SubjectHub({
             </h1>
             <p className="mt-3 max-w-xl text-lg text-muted-foreground">{subtitle}</p>
           </div>
-          <ThemeToggle className="shrink-0" />
+          <div className="flex shrink-0 items-center gap-1">
+            <ProfileMenu />
+            <ThemeToggle />
+          </div>
         </div>
       </header>
       <main>{children}</main>
@@ -52,7 +56,7 @@ export function SubjectHub({
 }
 
 export const hubCardLinkClass =
-  "flex min-h-44 flex-col justify-between rounded-3xl bg-card p-5 shadow-sm ring-1 ring-border transition-transform hover:-translate-y-0.5 hover:bg-card-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
+  "flex min-h-44 flex-col justify-between rounded-3xl bg-card p-5 text-card-foreground shadow-sm ring-1 ring-border transition-transform hover:-translate-y-0.5 hover:bg-card-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
 
 export const hubCardLinkClassTall =
-  "flex min-h-56 flex-col justify-between rounded-3xl bg-card p-5 shadow-sm ring-1 ring-border transition-transform hover:-translate-y-0.5 hover:bg-card-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
+  "flex min-h-56 flex-col justify-between rounded-3xl bg-card p-5 text-card-foreground shadow-sm ring-1 ring-border transition-transform hover:-translate-y-0.5 hover:bg-card-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";

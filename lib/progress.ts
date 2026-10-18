@@ -1,7 +1,7 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
 import type { ComarquesScoreId } from "@/content/comarques/ca";
+import { readGameData, useGameData, writeGameData } from "@/lib/game-storage";
 
 export type AppId = "mates" | ComarquesScoreId;
 
@@ -11,56 +11,30 @@ export type StoredScore = {
   total: number;
 };
 
-function storageKey(app: AppId) {
-  return `estudia:${app}`;
-}
-
-const PROGRESS_EVENT = "estudia-progress";
-
-function subscribe(onStoreChange: () => void) {
-  const notify = () => onStoreChange();
-  window.addEventListener(PROGRESS_EVENT, notify);
-  window.addEventListener("storage", notify);
-  return () => {
-    window.removeEventListener(PROGRESS_EVENT, notify);
-    window.removeEventListener("storage", notify);
-  };
-}
-
-function notifyProgress() {
-  window.dispatchEvent(new Event(PROGRESS_EVENT));
-}
-
 /** @deprecated Use `StoredScore`. */
 export type LastScore = StoredScore;
 
-function parseScore(raw: string | null): StoredScore | null {
-  if (!raw) return null;
+function parseScore(data: unknown): StoredScore | null {
+  if (!data || typeof data !== "object") return null;
 
-  try {
-    const parsed = JSON.parse(raw) as Partial<StoredScore>;
-    if (
-      typeof parsed.correct !== "number" ||
-      typeof parsed.total !== "number" ||
-      !Number.isFinite(parsed.correct) ||
-      !Number.isFinite(parsed.total)
-    ) {
-      return null;
-    }
-    return { correct: parsed.correct, total: parsed.total };
-  } catch {
+  const parsed = data as Partial<StoredScore>;
+  if (
+    typeof parsed.correct !== "number" ||
+    typeof parsed.total !== "number" ||
+    !Number.isFinite(parsed.correct) ||
+    !Number.isFinite(parsed.total)
+  ) {
     return null;
   }
+  return { correct: parsed.correct, total: parsed.total };
 }
 
 export function readScore(app: AppId): StoredScore | null {
-  if (typeof window === "undefined") return null;
-  return parseScore(window.localStorage.getItem(storageKey(app)));
+  return parseScore(readGameData(app));
 }
 
 export function writeScore(app: AppId, score: StoredScore) {
-  window.localStorage.setItem(storageKey(app), JSON.stringify(score));
-  notifyProgress();
+  writeGameData(app, score);
 }
 
 function beatsStoredBest(prev: StoredScore, next: StoredScore) {
@@ -76,12 +50,7 @@ export function writeBestScore(app: AppId, score: StoredScore) {
 }
 
 export function useStoredScore(app: AppId): StoredScore | null {
-  const raw = useSyncExternalStore(
-    subscribe,
-    () => window.localStorage.getItem(storageKey(app)),
-    () => null,
-  );
-  return parseScore(raw);
+  return parseScore(useGameData(app));
 }
 
 /** @deprecated Use `useStoredScore`. */
