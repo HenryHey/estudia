@@ -28,7 +28,11 @@
     "editProfile": "Edita el perfil {name}",
     "close": "Tanca",
     "backToList": "Torna a la llista",
-    "delete": "Elimina el perfil {name}"
+    "delete": "Elimina el perfil {name}",
+    "deleteConfirmTitle": "Eliminar el perfil {name}?",
+    "deleteConfirmBody": "S'eliminaran les puntuacions d'aquest perfil. Aquesta acció no es pot desfer.",
+    "deleteConfirmConfirm": "Elimina el perfil",
+    "deleteConfirmCancel": "Cancel·la"
   },
   "theme": {
     "cycle": "Canvia el tema",
@@ -75,6 +79,14 @@
     "score": "{correct} de {total}",
     "progress": "{current} / {total}",
     "answerIs": "La resposta és {answer}"
+  },
+  "highScores": {
+    "title": "Millors puntuacions",
+    "empty": "Encara no hi ha puntuacions.",
+    "columnCorrect": "Encerts",
+    "columnTime": "Temps",
+    "entry": "{correct} de {total}",
+    "timeColumnHint": "Es mostra amb almenys un {minPercent} % d'encerts."
   },
   "flashcards": {
     "tapToFlip": "Toca la targeta per girar-la",

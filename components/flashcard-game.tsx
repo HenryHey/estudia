@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { Flashcard } from "@/content/flashcards/ca";
 import { FlashcardExamSession } from "@/components/flashcard-exam-session";
 import { FlashcardStudySession } from "@/components/flashcard-study-session";
+import { GameHighScores } from "@/components/game-high-scores";
 import { Shell } from "@/components/shell";
 import { primaryButton, secondaryButton } from "@/components/app-ui";
 import { defaultLocale, t } from "@/lib/i18n";
@@ -83,6 +84,7 @@ export function FlashcardGame({
       <p className="mt-2 text-center text-sm text-muted-foreground">
         {t(defaultLocale, "flashcards.modeExamHint")}
       </p>
+      <GameHighScores gameId={scoreId} />
     </Shell>
   );
 }

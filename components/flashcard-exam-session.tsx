@@ -27,6 +27,7 @@ export function FlashcardExamSession({
   const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
   const historyGuardActive = useRef(false);
   const skipPopState = useRef(false);
+  const examStartedAt = useRef(Date.now());
 
   const sessionTotal = cards.length;
   const examInProgress = sessionTotal > 0 && phase !== "done";
@@ -77,6 +78,7 @@ export function FlashcardExamSession({
   }
 
   function restart() {
+    examStartedAt.current = Date.now();
     setCards(flashcardsForExam(flashcards));
     setIndex(0);
     setCorrect(0);
@@ -126,7 +128,11 @@ export function FlashcardExamSession({
     const nextIndex = index + 1;
 
     if (nextIndex >= sessionTotal) {
-      writeBestScore(scoreId, { correct: nextCorrect, total: sessionTotal });
+      writeBestScore(scoreId, {
+        correct: nextCorrect,
+        total: sessionTotal,
+        durationMs: Date.now() - examStartedAt.current,
+      });
       setCorrect(nextCorrect);
       setIndex(nextIndex);
       setPhase("done");

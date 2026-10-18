@@ -9,12 +9,14 @@ export type AppId = "mates" | ComarquesScoreId;
 export type StoredScore = {
   correct: number;
   total: number;
+  /** Elapsed time for the run; stored with personal bests in exam mode. */
+  durationMs?: number;
 };
 
 /** @deprecated Use `StoredScore`. */
 export type LastScore = StoredScore;
 
-function parseScore(data: unknown): StoredScore | null {
+export function parseStoredScore(data: unknown): StoredScore | null {
   if (!data || typeof data !== "object") return null;
 
   const parsed = data as Partial<StoredScore>;
@@ -26,7 +28,20 @@ function parseScore(data: unknown): StoredScore | null {
   ) {
     return null;
   }
-  return { correct: parsed.correct, total: parsed.total };
+
+  const score: StoredScore = { correct: parsed.correct, total: parsed.total };
+  if (
+    typeof parsed.durationMs === "number" &&
+    Number.isFinite(parsed.durationMs) &&
+    parsed.durationMs >= 0
+  ) {
+    score.durationMs = parsed.durationMs;
+  }
+  return score;
+}
+
+function parseScore(data: unknown): StoredScore | null {
+  return parseStoredScore(data);
 }
 
 export function readScore(app: AppId): StoredScore | null {
@@ -39,7 +54,10 @@ export function writeScore(app: AppId, score: StoredScore) {
 
 function beatsStoredBest(prev: StoredScore, next: StoredScore) {
   if (next.correct !== prev.correct) return next.correct > prev.correct;
-  return next.total > prev.total;
+  if (next.total !== prev.total) return next.total > prev.total;
+  const prevTime = prev.durationMs ?? Number.POSITIVE_INFINITY;
+  const nextTime = next.durationMs ?? Number.POSITIVE_INFINITY;
+  return nextTime < prevTime;
 }
 
 /** Persists only if this run beats the previous best (correct, then total). */
