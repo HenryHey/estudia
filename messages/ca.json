@@ -10,6 +10,26 @@
     "home": "Inici",
     "back": "Enrere"
   },
+  "profile": {
+    "title": "Perfils",
+    "subtitle": "Tria qui practica. Les puntuacions es guarden per perfil.",
+    "anonymous": "Anònim",
+    "openMenu": "Perfil actiu: {name}",
+    "usernameLabel": "Nom d'usuari",
+    "usernamePlaceholder": "El teu nom",
+    "emojiLabel": "Emoji",
+    "editEmoji": "Tria un emoji",
+    "emojiPickerClose": "Tanca el selector d'emoji",
+    "emojiSearch": "Cerca un emoji…",
+    "emojiEmpty": "No s'ha trobat cap emoji.",
+    "emojiSelectHint": "Tria un emoji…",
+    "create": "Nou perfil",
+    "save": "Desa el perfil",
+    "editProfile": "Edita el perfil {name}",
+    "close": "Tanca",
+    "backToList": "Torna a la llista",
+    "delete": "Elimina el perfil {name}"
+  },
   "theme": {
     "cycle": "Canvia el tema",
     "modeLight": "Clar",
