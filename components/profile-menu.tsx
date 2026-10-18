@@ -3,6 +3,7 @@
 import { Pencil, Plus, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { navButtonClassName, primaryButton, secondaryButton } from "@/components/app-ui";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 import { ProfileEmoji } from "@/components/profile-emoji";
 import { Button } from "@/components/ui/button";
 import {
@@ -91,6 +92,9 @@ export function ProfileMenu({ className }: { className?: string }) {
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const [username, setUsername] = useState("");
   const [pickedEmoji, setPickedEmoji] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(
+    null,
+  );
 
   const active = useActiveProfile();
   const storedProfiles = useStoredProfilesList();
@@ -116,7 +120,14 @@ export function ProfileMenu({ className }: { className?: string }) {
 
   function closeDialog() {
     setOpen(false);
+    setDeleteTarget(null);
     resetForm();
+  }
+
+  function confirmDeleteProfile() {
+    if (!deleteTarget) return;
+    deleteProfile(deleteTarget.id);
+    setDeleteTarget(null);
   }
 
   function startCreate() {
@@ -294,7 +305,9 @@ export function ProfileMenu({ className }: { className?: string }) {
                             </button>
                             <button
                               type="button"
-                              onClick={() => deleteProfile(profile.id)}
+                              onClick={() =>
+                                setDeleteTarget({ id: profile.id, name: profile.username })
+                              }
                               className="inline-flex size-10 items-center justify-center rounded-xl text-muted-foreground"
                               aria-label={t(defaultLocale, "profile.delete", {
                                 name: profile.username,
@@ -350,6 +363,19 @@ export function ProfileMenu({ className }: { className?: string }) {
           </div>
         </div>
       </dialog>
+
+      <ConfirmDialog
+        open={deleteTarget !== null}
+        title={t(defaultLocale, "profile.deleteConfirmTitle", {
+          name: deleteTarget?.name ?? "",
+        })}
+        confirmLabel={t(defaultLocale, "profile.deleteConfirmConfirm")}
+        cancelLabel={t(defaultLocale, "profile.deleteConfirmCancel")}
+        onConfirm={confirmDeleteProfile}
+        onCancel={() => setDeleteTarget(null)}
+      >
+        {t(defaultLocale, "profile.deleteConfirmBody")}
+      </ConfirmDialog>
     </>
   );
 }

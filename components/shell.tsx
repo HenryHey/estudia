@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useEffect, type ReactNode } from "react";
 import { navButtonClassName, sessionButtonClassName } from "@/components/app-ui";
 import { ProfileMenu } from "@/components/profile-menu";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { defaultLocale, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -54,7 +53,6 @@ export function Shell({
         <div className="flex min-w-0 flex-1 items-center justify-end gap-1 sm:gap-2">
           <h1 className="truncate text-2xl font-semibold tracking-tight">{title}</h1>
           <ProfileMenu />
-          <ThemeToggle />
         </div>
       </header>
       <main className="flex flex-1 flex-col">{children}</main>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { clearProfileGameStorage } from "@/lib/game-storage";
 
 export const PROFILES_STORAGE_KEY = "estudia:profiles";
 export const ACTIVE_PROFILE_STORAGE_KEY = "estudia:active-profile";
@@ -173,6 +174,7 @@ export function deleteProfile(id: string) {
     window.localStorage.setItem(ACTIVE_PROFILE_STORAGE_KEY, ANONYMOUS_PROFILE_ID);
   }
 
+  clearProfileGameStorage(id);
   notifyProfiles();
 }
 

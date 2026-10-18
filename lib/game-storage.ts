@@ -68,6 +68,25 @@ export function writeGameData<T>(gameId: string, data: T, profileId?: string) {
   notifyGameStorage();
 }
 
+/** Removes all saved game payloads for a profile (e.g. when the profile is deleted). */
+export function clearProfileGameStorage(profileId: string) {
+  if (typeof window === "undefined") return;
+
+  const prefix = `estudia:${profileId}:game:`;
+  const keysToRemove: string[] = [];
+
+  for (let i = 0; i < window.localStorage.length; i++) {
+    const key = window.localStorage.key(i);
+    if (key?.startsWith(prefix)) keysToRemove.push(key);
+  }
+
+  for (const key of keysToRemove) {
+    window.localStorage.removeItem(key);
+  }
+
+  if (keysToRemove.length > 0) notifyGameStorage();
+}
+
 export function useGameData<T>(gameId: string): T | null {
   const raw = useSyncExternalStore(
     subscribe,
