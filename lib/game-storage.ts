@@ -1,33 +1,27 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { readActiveProfileId, subscribeProfiles } from "@/lib/profile";
 import {
-  ANONYMOUS_PROFILE_ID,
-  readActiveProfileId,
-  subscribeProfiles,
-} from "@/lib/profile";
+  gameStorageKey,
+  readGamePayload,
+  subscribeSync,
+  writeGamePayload,
+} from "@/lib/sync-store";
+
+export { gameStorageKey };
 
 const PROGRESS_EVENT = "estudia-progress";
-
-/** Legacy key before profiles (migrated into the anonymous profile). */
-function legacyStorageKey(gameId: string) {
-  return `estudia:${gameId}`;
-}
-
-/** Per-profile game payload keyed by game id in localStorage. */
-export function gameStorageKey(profileId: string, gameId: string) {
-  return `estudia:${profileId}:game:${gameId}`;
-}
 
 function subscribe(onStoreChange: () => void) {
   const notify = () => onStoreChange();
   window.addEventListener(PROGRESS_EVENT, notify);
-  window.addEventListener("storage", notify);
   const unsubProfile = subscribeProfiles(notify);
+  const unsubSync = subscribeSync(notify);
   return () => {
     window.removeEventListener(PROGRESS_EVENT, notify);
-    window.removeEventListener("storage", notify);
     unsubProfile();
+    unsubSync();
   };
 }
 
@@ -35,67 +29,28 @@ function notifyGameStorage() {
   window.dispatchEvent(new Event(PROGRESS_EVENT));
 }
 
-function migrateLegacyGameData(gameId: string) {
-  const legacy = window.localStorage.getItem(legacyStorageKey(gameId));
-  if (!legacy) return;
-
-  const target = gameStorageKey(ANONYMOUS_PROFILE_ID, gameId);
-  if (!window.localStorage.getItem(target)) {
-    window.localStorage.setItem(target, legacy);
-  }
-  window.localStorage.removeItem(legacyStorageKey(gameId));
-}
-
 export function readGameData<T>(gameId: string, profileId?: string): T | null {
   if (typeof window === "undefined") return null;
 
-  migrateLegacyGameData(gameId);
-
   const pid = profileId ?? readActiveProfileId();
-  const raw = window.localStorage.getItem(gameStorageKey(pid, gameId));
-  if (!raw) return null;
-
-  try {
-    return JSON.parse(raw) as T;
-  } catch {
-    return null;
-  }
+  return readGamePayload<T>(pid, gameId);
 }
 
 export function writeGameData<T>(gameId: string, data: T, profileId?: string) {
   const pid = profileId ?? readActiveProfileId();
-  window.localStorage.setItem(gameStorageKey(pid, gameId), JSON.stringify(data));
+  writeGamePayload(pid, gameId, data);
   notifyGameStorage();
-}
-
-/** Removes all saved game payloads for a profile (e.g. when the profile is deleted). */
-export function clearProfileGameStorage(profileId: string) {
-  if (typeof window === "undefined") return;
-
-  const prefix = `estudia:${profileId}:game:`;
-  const keysToRemove: string[] = [];
-
-  for (let i = 0; i < window.localStorage.length; i++) {
-    const key = window.localStorage.key(i);
-    if (key?.startsWith(prefix)) keysToRemove.push(key);
-  }
-
-  for (const key of keysToRemove) {
-    window.localStorage.removeItem(key);
-  }
-
-  if (keysToRemove.length > 0) notifyGameStorage();
 }
 
 export function useGameData<T>(gameId: string): T | null {
   const raw = useSyncExternalStore(
     subscribe,
     () => {
-      migrateLegacyGameData(gameId);
       const pid = readActiveProfileId();
-      return window.localStorage.getItem(gameStorageKey(pid, gameId));
+      const data = readGamePayload<unknown>(pid, gameId);
+      return data === null ? "" : JSON.stringify(data);
     },
-    () => null,
+    () => "",
   );
 
   if (!raw) return null;

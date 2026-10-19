@@ -1,6 +1,6 @@
 "use client";
 
-import { Pencil, Plus, Trash2, X } from "lucide-react";
+import { Check, Copy, Pencil, Plus, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { navButtonClassName, primaryButton, secondaryButton } from "@/components/app-ui";
 import { ConfirmDialog } from "@/components/confirm-dialog";
@@ -27,6 +27,7 @@ import {
   useStoredProfilesList,
   type Profile,
 } from "@/lib/profile";
+import { buildShareUrl, ensureSyncId } from "@/lib/sync-id";
 import { cn } from "@/lib/utils";
 
 const PLACEHOLDER_EMOJI = "❓";
@@ -95,6 +96,7 @@ export function ProfileMenu({ className }: { className?: string }) {
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(
     null,
   );
+  const [syncLinkCopied, setSyncLinkCopied] = useState(false);
 
   const active = useActiveProfile();
   const storedProfiles = useStoredProfilesList();
@@ -121,7 +123,19 @@ export function ProfileMenu({ className }: { className?: string }) {
   function closeDialog() {
     setOpen(false);
     setDeleteTarget(null);
+    setSyncLinkCopied(false);
     resetForm();
+  }
+
+  async function copySyncLink() {
+    const url = buildShareUrl(ensureSyncId());
+    try {
+      await navigator.clipboard.writeText(url);
+      setSyncLinkCopied(true);
+      window.setTimeout(() => setSyncLinkCopied(false), 2000);
+    } catch {
+      /* ignore */
+    }
   }
 
   function confirmDeleteProfile() {
@@ -264,6 +278,27 @@ export function ProfileMenu({ className }: { className?: string }) {
             <p className="mt-1 text-sm text-muted-foreground">
               {t(defaultLocale, "profile.subtitle")}
             </p>
+            {!inProfileForm ? (
+              <div className="mt-4 rounded-2xl bg-muted/50 px-4 py-3">
+                <p className="text-sm text-muted-foreground">
+                  {t(defaultLocale, "profile.syncHint")}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => void copySyncLink()}
+                  className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-primary"
+                >
+                  {syncLinkCopied ? (
+                    <Check className="size-4 shrink-0" aria-hidden />
+                  ) : (
+                    <Copy className="size-4 shrink-0" aria-hidden />
+                  )}
+                  {syncLinkCopied
+                    ? t(defaultLocale, "profile.syncCopied")
+                    : t(defaultLocale, "profile.syncCopyLink")}
+                </button>
+              </div>
+            ) : null}
           </div>
 
           <div className="overflow-y-auto px-6 py-4">
