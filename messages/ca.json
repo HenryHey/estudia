@@ -32,7 +32,10 @@
     "deleteConfirmTitle": "Eliminar el perfil {name}?",
     "deleteConfirmBody": "S'eliminaran les puntuacions d'aquest perfil. Aquesta acció no es pot desfer.",
     "deleteConfirmConfirm": "Elimina el perfil",
-    "deleteConfirmCancel": "Cancel·la"
+    "deleteConfirmCancel": "Cancel·la",
+    "syncHint": "Obre aquest enllaç en altres dispositius per compartir perfils i puntuacions.",
+    "syncCopyLink": "Copia l'enllaç",
+    "syncCopied": "Enllaç copiat"
   },
   "theme": {
     "cycle": "Canvia el tema",
