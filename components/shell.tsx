@@ -19,12 +19,15 @@ export function Shell({
   children,
   backHref = "/",
   onBack,
+  wide = false,
 }: {
   title: string;
   children: ReactNode;
   backHref?: string;
   /** When set, back stays in-app (e.g. mode picker) instead of navigating away. */
   onBack?: () => void;
+  /** Wider column for games that need a map. */
+  wide?: boolean;
 }) {
   useEffect(() => {
     document.title = title;
@@ -37,7 +40,12 @@ export function Shell({
   const BackIcon = isHome ? Home : ChevronLeft;
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-1 flex-col px-4 py-6 sm:py-10">
+    <div
+      className={cn(
+        "mx-auto flex w-full flex-1 flex-col px-4 py-6 sm:py-10",
+        wide ? "max-w-3xl" : "max-w-xl",
+      )}
+    >
       <header className="mb-6 flex items-center gap-4">
         {onBack ? (
           <button type="button" onClick={onBack} className={backControlClass}>
