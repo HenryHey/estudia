@@ -1,9 +1,9 @@
 "use client";
 
-import type { ComarquesScoreId } from "@/content/comarques/ca";
+import type { ComarquesMapScoreId, ComarquesScoreId } from "@/content/comarques/ca";
 import { readGameData, useGameData, writeGameData } from "@/lib/game-storage";
 
-export type AppId = "mates" | ComarquesScoreId;
+export type AppId = "mates" | ComarquesScoreId | ComarquesMapScoreId;
 
 /** Score persisted in localStorage (last run or personal best, depending on writer). */
 export type StoredScore = {

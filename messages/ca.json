@@ -65,7 +65,17 @@
     }
   },
   "geography": {
-    "provinceDescription": "Practica comarques i capitals."
+    "provinceDescription": "Practica comarques i capitals.",
+    "mapSection": "Al mapa",
+    "mapTitle": "{name} al mapa",
+    "mapDescription": "Localitza les comarques al mapa."
+  },
+  "map": {
+    "clickHint": "Toca el mapa on és.",
+    "labelComarca": "Comarca",
+    "labelCapital": "Capital",
+    "missed": "El punt verd marca el lloc.",
+    "empty": "No hi ha llocs en aquest mapa."
   },
   "actions": {
     "flip": "Gira",
