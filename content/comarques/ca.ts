@@ -32,7 +32,7 @@ const rows: ComarcaRow[] = [
   { comarca: "Baix Penedès", capital: "El Vendrell", provincia: "Tarragona" },
   { comarca: "Barcelonès", capital: "Barcelona", provincia: "Barcelona" },
   { comarca: "Berguedà", capital: "Berga", provincia: "Barcelona" },
-  { comarca: "Cerdanya", capital: "Puigcerdà", provincia: "Girona" },
+  { comarca: "Cerdanya", capital: "Puigcerdà", provincia: "Lleida" },
   { comarca: "Conca de Barberà", capital: "Montblanc", provincia: "Tarragona" },
   { comarca: "Garraf", capital: "Vilanova i la Geltrú", provincia: "Barcelona" },
   { comarca: "Garrigues", capital: "Les Borges Blanques", provincia: "Lleida" },
