@@ -1,7 +1,7 @@
 import type { Flashcard } from "@/content/flashcards/ca";
 import { shuffle } from "@/lib/shuffle";
 
-/** One card per logical item (e.g. comarca OR capital, not both). */
+/** One card per comarca. Exams always ask for the capital and show the comarca name. */
 export function flashcardsForExam(deck: Flashcard[]): Flashcard[] {
   const groups = new Map<string, Flashcard[]>();
 
@@ -15,8 +15,8 @@ export function flashcardsForExam(deck: Flashcard[]): Flashcard[] {
 
   const picked: Flashcard[] = [];
   for (const group of groups.values()) {
-    const index = Math.floor(Math.random() * group.length);
-    picked.push(group[index]!);
+    const capital = group.find((card) => /-capital-/.test(card.id));
+    picked.push(capital ?? group[0]!);
   }
 
   return shuffle(picked);

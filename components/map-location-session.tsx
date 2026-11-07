@@ -253,7 +253,11 @@ export function MapLocationSession({
           <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {t(
               defaultLocale,
-              current.kind === "comarca" ? "map.labelComarca" : "map.labelCapital",
+              mode === "exam"
+                ? "map.labelCapitalDeComarca"
+                : current.kind === "comarca"
+                  ? "map.labelComarca"
+                  : "map.labelCapital",
             )}
           </p>
           <p className="mt-1 text-3xl font-semibold tracking-tight">{current.prompt}</p>

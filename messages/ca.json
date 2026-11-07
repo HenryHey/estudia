@@ -74,6 +74,7 @@
     "clickHint": "Toca el mapa on és.",
     "labelComarca": "Comarca",
     "labelCapital": "Capital",
+    "labelCapitalDeComarca": "Capital de comarca",
     "missed": "El punt verd marca el lloc.",
     "empty": "No hi ha llocs en aquest mapa."
   },
