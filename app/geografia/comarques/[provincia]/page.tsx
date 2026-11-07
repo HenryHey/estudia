@@ -3,15 +3,22 @@ import { notFound } from "next/navigation";
 import { FlashcardGame } from "@/components/flashcard-game";
 import { Shell } from "@/components/shell";
 import {
+  catalunyaScope,
+  comarquesCatalunyaScoreId,
   comarquesScoreId,
+  flashcardsForCatalunya,
   flashcardsForProvincia,
   getProvincia,
   provincies,
   type ProvinciaId,
 } from "@/content/comarques/ca";
+import { defaultLocale, t } from "@/lib/i18n";
 
 export function generateStaticParams() {
-  return provincies.map((provincia) => ({ provincia: provincia.id }));
+  return [
+    { provincia: catalunyaScope },
+    ...provincies.map((provincia) => ({ provincia: provincia.id })),
+  ];
 }
 
 function ComarquesProvinciaFallback() {
@@ -32,6 +39,18 @@ async function ComarquesProvinciaContent({
   params: Promise<{ provincia: string }>;
 }) {
   const { provincia: provinciaParam } = await params;
+
+  if (provinciaParam === catalunyaScope) {
+    return (
+      <FlashcardGame
+        title={t(defaultLocale, "geography.allTitle")}
+        flashcards={flashcardsForCatalunya()}
+        scoreId={comarquesCatalunyaScoreId}
+        backHref="/geografia/comarques"
+      />
+    );
+  }
+
   const provincia = getProvincia(provinciaParam);
 
   if (!provincia) {

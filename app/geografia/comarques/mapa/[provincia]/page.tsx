@@ -3,8 +3,11 @@ import { notFound } from "next/navigation";
 import { MapLocationGame } from "@/components/map-location-game";
 import { Shell } from "@/components/shell";
 import {
+  catalunyaScope,
+  comarquesCatalunyaMapScoreId,
   comarquesMapScoreId,
   getProvincia,
+  mapQuestionsForCatalunya,
   mapQuestionsForProvincia,
   provincies,
   type ProvinciaId,
@@ -12,7 +15,10 @@ import {
 import { defaultLocale, t } from "@/lib/i18n";
 
 export function generateStaticParams() {
-  return provincies.map((provincia) => ({ provincia: provincia.id }));
+  return [
+    { provincia: catalunyaScope },
+    ...provincies.map((provincia) => ({ provincia: provincia.id })),
+  ];
 }
 
 function MapFallback() {
@@ -30,6 +36,20 @@ async function MapProvinciaContent({
   params: Promise<{ provincia: string }>;
 }) {
   const { provincia: provinciaParam } = await params;
+
+  if (provinciaParam === catalunyaScope) {
+    return (
+      <MapLocationGame
+        title={t(defaultLocale, "geography.mapTitle", {
+          name: t(defaultLocale, "geography.allTitle"),
+        })}
+        questions={mapQuestionsForCatalunya()}
+        scoreId={comarquesCatalunyaMapScoreId}
+        backHref="/geografia/comarques"
+      />
+    );
+  }
+
   const provincia = getProvincia(provinciaParam);
 
   if (!provincia) {

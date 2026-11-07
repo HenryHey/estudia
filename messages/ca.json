@@ -66,9 +66,12 @@
   },
   "geography": {
     "provinceDescription": "Practica comarques i capitals.",
+    "allTitle": "Catalunya",
+    "allDescription": "Practica totes les comarques i capitals.",
     "mapSection": "Al mapa",
     "mapTitle": "{name} al mapa",
-    "mapDescription": "Localitza les comarques al mapa."
+    "mapDescription": "Localitza les comarques al mapa.",
+    "allMapDescription": "Localitza totes les comarques al mapa."
   },
   "map": {
     "clickHint": "Toca el mapa on és.",

@@ -106,20 +106,21 @@ export function getProvincia(id: string): (typeof provincies)[number] | undefine
   return provincies.find((p) => p.id === id);
 }
 
-export function flashcardsForProvincia(provinciaId: ProvinciaId): Flashcard[] {
-  const provinciaName = provinciaNameById[provinciaId];
-  const filtered = rows.filter((row) => row.provincia === provinciaName);
+/** Deck and score scope for every comarca in the four provinces. */
+export const catalunyaScope = "catalunya" as const;
+
+function flashcardsFromRows(scope: string, filtered: readonly ComarcaRow[]): Flashcard[] {
   const cards: Flashcard[] = [];
 
   for (const row of filtered) {
     const base = slug(row.comarca);
     cards.push({
-      id: `${provinciaId}-comarca-${base}`,
+      id: `${scope}-comarca-${base}`,
       front: `Comarca\n${row.capital}`,
       back: row.comarca,
     });
     cards.push({
-      id: `${provinciaId}-capital-${base}`,
+      id: `${scope}-capital-${base}`,
       front: `Capital de comarca\n${row.comarca}`,
       back: row.capital,
     });
@@ -128,11 +129,27 @@ export function flashcardsForProvincia(provinciaId: ProvinciaId): Flashcard[] {
   return cards;
 }
 
+export function flashcardsForProvincia(provinciaId: ProvinciaId): Flashcard[] {
+  const provinciaName = provinciaNameById[provinciaId];
+  return flashcardsFromRows(
+    provinciaId,
+    rows.filter((row) => row.provincia === provinciaName),
+  );
+}
+
+export function flashcardsForCatalunya(): Flashcard[] {
+  return flashcardsFromRows(catalunyaScope, rows);
+}
+
 export function comarquesScoreId(provinciaId: ProvinciaId) {
   return `comarques:${provinciaId}` as const;
 }
 
-export type ComarquesScoreId = ReturnType<typeof comarquesScoreId>;
+export const comarquesCatalunyaScoreId = `comarques:${catalunyaScope}` as const;
+
+export type ComarquesScoreId =
+  | ReturnType<typeof comarquesScoreId>
+  | typeof comarquesCatalunyaScoreId;
 
 export const catalunyaMapSrc = "/maps/catalunya_blank.png";
 
@@ -158,26 +175,35 @@ export function catalunyaCapitalMarkers(): MapPoint[] {
   return rows.flatMap((row) => row.points.map(({ x, y }) => ({ x, y })));
 }
 
+function mapQuestionsFromRows(scope: string, filtered: readonly ComarcaRow[]): MapQuestion[] {
+  return filtered.map((row) => ({
+    id: `${scope}-map-comarca-${slug(row.comarca)}`,
+    kind: "comarca" as const,
+    prompt: row.comarca,
+    targets: namedCapitals(row).map(({ x, y }) => ({ x, y })),
+  }));
+}
+
 /** One prompt per comarca in a province. The target is that comarca’s capital. */
 export function mapQuestionsForProvincia(provinciaId: ProvinciaId): MapQuestion[] {
   const provinciaName = provinciaNameById[provinciaId];
-  const questions: MapQuestion[] = [];
+  return mapQuestionsFromRows(
+    provinciaId,
+    rows.filter((row) => row.provincia === provinciaName),
+  );
+}
 
-  for (const row of rows) {
-    if (row.provincia !== provinciaName) continue;
-    questions.push({
-      id: `${provinciaId}-map-comarca-${slug(row.comarca)}`,
-      kind: "comarca",
-      prompt: row.comarca,
-      targets: namedCapitals(row).map(({ x, y }) => ({ x, y })),
-    });
-  }
-
-  return questions;
+/** One prompt per comarca in Catalonia. The target is that comarca’s capital. */
+export function mapQuestionsForCatalunya(): MapQuestion[] {
+  return mapQuestionsFromRows(catalunyaScope, rows);
 }
 
 export function comarquesMapScoreId(provinciaId: ProvinciaId) {
   return `comarques-mapa:${provinciaId}` as const;
 }
 
-export type ComarquesMapScoreId = ReturnType<typeof comarquesMapScoreId>;
+export const comarquesCatalunyaMapScoreId = `comarques-mapa:${catalunyaScope}` as const;
+
+export type ComarquesMapScoreId =
+  | ReturnType<typeof comarquesMapScoreId>
+  | typeof comarquesCatalunyaMapScoreId;

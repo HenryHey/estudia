@@ -6,8 +6,11 @@ import { HubIcon } from "@/components/hub-icon";
 import { SubjectHub, hubCardLinkClass } from "@/components/subject-hub";
 import {
   provincies,
+  comarquesCatalunyaMapScoreId,
+  comarquesCatalunyaScoreId,
   comarquesMapScoreId,
   comarquesScoreId,
+  catalunyaScope,
   type ProvinciaId,
 } from "@/content/comarques/ca";
 import { defaultLocale, t } from "@/lib/i18n";
@@ -30,6 +33,22 @@ export default function ComarquesTopicPage() {
       subtitle={t(defaultLocale, "topics.comarques.description")}
     >
       <ul className="grid gap-4 sm:grid-cols-2">
+        <li className="sm:col-span-2">
+          <Link href={`/geografia/comarques/${catalunyaScope}`} className={hubCardLinkClass}>
+            <HubIcon icon={MapPin} className="bg-indigo-800" />
+            <span>
+              <span className="block text-xl font-semibold">
+                {t(defaultLocale, "geography.allTitle")}
+              </span>
+              <span className="mt-1 block text-base text-muted-foreground">
+                {t(defaultLocale, "geography.allDescription")}
+              </span>
+            </span>
+            <span className="text-sm text-muted-foreground">
+              <ScoreLine scoreId={comarquesCatalunyaScoreId} />
+            </span>
+          </Link>
+        </li>
         {provincies.map((provincia) => (
           <li key={provincia.id}>
             <Link href={`/geografia/comarques/${provincia.id}`} className={hubCardLinkClass}>
@@ -49,6 +68,27 @@ export default function ComarquesTopicPage() {
       </ul>
       <h2 className="mt-10 text-lg font-semibold">{t(defaultLocale, "geography.mapSection")}</h2>
       <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+        <li className="sm:col-span-2">
+          <Link
+            href={`/geografia/comarques/mapa/${catalunyaScope}`}
+            className={hubCardLinkClass}
+          >
+            <HubIcon icon={LocateFixed} className="bg-teal-800" />
+            <span>
+              <span className="block text-xl font-semibold">
+                {t(defaultLocale, "geography.mapTitle", {
+                  name: t(defaultLocale, "geography.allTitle"),
+                })}
+              </span>
+              <span className="mt-1 block text-base text-muted-foreground">
+                {t(defaultLocale, "geography.allMapDescription")}
+              </span>
+            </span>
+            <span className="text-sm text-muted-foreground">
+              <ScoreLine scoreId={comarquesCatalunyaMapScoreId} />
+            </span>
+          </Link>
+        </li>
         {provincies.map((provincia) => (
           <li key={`map-${provincia.id}`}>
             <Link

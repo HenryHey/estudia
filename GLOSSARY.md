@@ -20,8 +20,8 @@ Reference for naming parts of the app in prompts. The **UI is in Catalan**; this
 
 | Game | What the learner does | Used for |
 |------|------------------------|----------|
-| **Flashcard game** | Flip a **card**, see the answer, say **I knew it** or **not yet** (and choose **study** or **exam** first) | Geography topic **Comarques de Catalunya** (per **province**) |
-| **Map game** | **Point** on a map of Catalonia, one place at a time (choose **study** or **exam** first) | **Comarques de Catalunya**, one module per **province**: each **comarca** |
+| **Flashcard game** | Flip a **card**, see the answer, say **I knew it** or **not yet** (and choose **study** or **exam** first) | Geography topic **Comarques de Catalunya** (per **province**, and one deck for all four) |
+| **Map game** | **Point** on a map of Catalonia, one place at a time (choose **study** or **exam** first) | **Comarques de Catalunya**, one module per **province** and one for all of Catalonia: each **comarca** |
 | **Times-table game** | Answer **multiplication** problems one at a time: type the result, **check**, get feedback, **next** until the round ends | Math topic **Taules de multiplicar** |
 
 ---
@@ -46,8 +46,8 @@ Reference for naming parts of the app in prompts. The **UI is in Catalan**; this
 
 ### Geography
 
-- **Flow:** home → *Geografia* → topic *Comarques de Catalunya* → **province** → flashcard game, or → **province on the map** → map game.
-- **Scores:** each **province** tile (flashcards and map) shows its own **best exam**; subject and topic tiles do not show one combined score.
+- **Flow:** home → *Geografia* → topic *Comarques de Catalunya* → **province** or **Catalunya** (all four) → flashcard game, or → **province on the map** / **Catalunya on the map** → map game.
+- **Scores:** each **province** tile and the **Catalunya** tiles (flashcards and map) show their own **best exam**; subject and topic tiles do not show one combined score.
 
 ### Math
 
@@ -60,7 +60,7 @@ Reference for naming parts of the app in prompts. The **UI is in Catalan**; this
 
 ### Comarques de Catalunya (Geography)
 
-- **Practices:** **comarques** and **county capitals** in **Catalonia**, by **province**.
+- **Practices:** **comarques** and **county capitals** in **Catalonia**, by **province**, plus one deck and one map for all four provinces together (*Catalunya*).
 - **Games:** flashcard game, and a **map game** (point to each comarca; the target is the capital’s position on the map).
 
 ### Taules de multiplicar (Math)
@@ -96,19 +96,19 @@ Cards often have a **label** (e.g. *Comarca* or *Capital de comarca*) plus the *
 | **Study** | *Estudi* | Missed cards **return** until all cleared | No |
 | **Exam** | *Examen* | **One turn per card** per round | Yes — **best exam** if improved |
 
-**Exam detail (Comarques flashcards):** one random question type per comarca per round (name from capital, or capital from name).
+**Exam detail (Comarques flashcards):** one question per comarca per round, always the capital from the comarca name. Study still uses both directions.
 
 ---
 
 ## Map game
 
-Used for **Comarques de Catalunya**, one module per province (*Barcelona al mapa*, and the same for Lleida, Tarragona, and Girona).
+Used for **Comarques de Catalunya**, one module per province (*Barcelona al mapa*, and the same for Lleida, Tarragona, and Girona) and one for all four (*Catalunya al mapa*).
 
-- **Round:** every comarca in that province, one at a time, in random order.
+- **Round:** every comarca in that module, one at a time, in random order.
 - **Flow:** the name is shown → the learner **clicks the map** → feedback (green marker at the right place) → *Següent*.
-- **Options:** every comarca in the province is marked with an empty circle on its capital square (Vallès Occidental has one circle on Sabadell and one on Terrassa). The map is cropped to a fixed frame that shows all of those circles.
+- **Options:** every comarca in the module is marked with an empty circle on its capital square (Vallès Occidental has one circle on Sabadell and one on Terrassa). The map is cropped to a fixed frame that shows all of those circles.
 - **Target:** the circle for the comarca being asked. A click counts when it is closer to that circle than to any other.
-- **Study / exam:** same rules as the flashcard game. Exam saves a **best exam** per province, separate from the flashcard score.
+- **Study / exam:** same rules as the flashcard game. Exam saves a **best exam** per module, separate from the flashcard score.
 
 ---
 
@@ -124,6 +124,7 @@ Used for **Taules de multiplicar**.
 ## Geography content (comarques)
 
 - **Province** — Barcelona, Lleida, Tarragona, or Girona; each has its own deck and best exam score.
+- **Catalunya** — all four provinces in one flashcard deck and one map module, each with its own best exam.
 - **Comarca** / **county capital** — paired recall both ways.
 
 Content follows the official comarca list (Generalitat reference t15902).
@@ -137,7 +138,9 @@ Content follows the official comarca list (Generalitat reference t15902).
 | Math subject (home) | **Last** round (times tables topic) |
 | Times tables **topic** tile | **Last** round |
 | Each **province** under Comarques (flashcards) | Best **exam** |
+| **Catalunya** flashcards (all four provinces) | Best **exam** (separate from each province) |
 | Each **province on the map** | Best **exam** (separate from flashcards) |
+| **Catalunya on the map** | Best **exam** (separate from province maps and from flashcards) |
 | Flashcard **study** mode | Nothing |
 
 If nothing played yet: *Encara sense puntuació*.
@@ -149,8 +152,10 @@ If nothing played yet: *Encara sense puntuació*.
 ```
 Home (/)
 ├── /geografia                      → topics (Geografia)
-│   └── /geografia/comarques        → provinces (tema: Comarques de Catalunya)
+│   └── /geografia/comarques        → provinces, plus Catalunya (tema: Comarques de Catalunya)
+│       ├── /geografia/comarques/catalunya → flashcard game (all four provinces)
 │       ├── /geografia/comarques/[provincia] → flashcard game
+│       ├── /geografia/comarques/mapa/catalunya → map game (all four provinces)
 │       └── /geografia/comarques/mapa/[provincia] → map game
 └── /mates                          → topics (Mates)
     └── /mates/taules               → times-table game (tema: Taules de multiplicar)
